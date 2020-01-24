@@ -1,9 +1,11 @@
 from C import C_Array
 from D import D_Array
+import numpy as np
+
 
 class G_Array(C_Array,D_Array):
     def __init__(self):
-        self.g=[]
+        self.g=np.array([])
         self.g_reign=0
         self.first=True
 
@@ -12,15 +14,16 @@ class G_Array(C_Array,D_Array):
         Returns the value of g for C and D array.
         """
         if self.first:
-            self.g.append(C.C_func(yo,0,pot_can)/D.D_func(pot_can,0,0))
+            self.g = np.append(self.g,(C.C_func(yo,0,pot_can)/D.D_func(pot_can,0,0)))
             self.first=False
+        #np.seterr('raise')
         return C.C_func(yo,m,pot_can)/D.D_func(pot_can,m,m)
 
     def set_g(self,index):
         """
         Sets the value of g in the array and returns the value.
         """
-        self.g.append(self.g_reign) 
+        self.g = np.append(self.g, self.g_reign) 
         return None
 
     def get_coeff(self,m,terms,sel_can,D):

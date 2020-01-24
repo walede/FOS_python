@@ -1,13 +1,15 @@
-import statistics as stats
+import numpy as np
+
 
 def mse(model,y_in,N_o):
-    result= [x1-x2 for x1,x2 in zip(y_in[N_o::],model[N_o::])]
-    result2= [x**2 for x in result]
-    return stats.mean(result2)
+    diff = np.subtract(y_in[N_o::], model[N_o::])
+    square = np.power(diff, 2)
+    mean = np.mean(square)
+    return mean
 
-def ideal_mse(model,y_in,N_o):
-   result= [x1-x2 for x1,x2 in zip(model[N_o::],y_in[N_o::])]
-   result2= [x**2 for x in result]
-   result3=stats.mean(result2)
-   result4= result3/stats.variance(y_in)
-   return 100*result4
+def percent_mse(model,y_in,N_o):
+   diff = np.subtract(model[N_o::],y_in[N_o::])
+   square = np.power(diff, 2)
+   mean = np.mean(square)
+   percent = mean / np.var(y_in)
+   return 100 * percent
